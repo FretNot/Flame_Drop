@@ -229,6 +229,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 3fe182f4-5b26-4bc5-a241-4b08452b18d6
     m_ActionName: GamePlay/Jump[/Keyboard/space]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1262763930}
+        m_TargetAssemblyTypeName: CameraManager, Assembly-CSharp
+        m_MethodName: Look
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 3e4b5ae9-3eba-4321-a897-ec8c6f6828d2
+    m_ActionName: GamePlay/Look[/Mouse/delta]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: GamePlay
@@ -882,7 +898,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 15
-  smoothTime: 4
+  rotationSpeed: 0
   gravityMultiplier: 1.5
   jumpPower: 4
 --- !u!143 &1097186689
@@ -985,7 +1001,7 @@ Camera:
   m_TargetEye: 3
   m_HDR: 1
   m_AllowMSAA: 1
-  m_AllowDynamicResolution: 0
+  m_AllowDynamicResolution: 1
   m_ForceIntoRT: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
@@ -999,7 +1015,7 @@ Transform:
   m_GameObject: {fileID: 1262763925}
   serializedVersion: 2
   m_LocalRotation: {x: 0.1429974, y: -0.0029536786, z: 0.00042675392, w: 0.9897186}
-  m_LocalPosition: {x: 0, y: 6.74, z: -7.01}
+  m_LocalPosition: {x: 0, y: 3.53, z: -12.92}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1062,7 +1078,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 1097186686}
-  smoothTime: 0.35
+  mouseSensitivity:
+    vertical: 0.05
+    horizontal: 0.05
+    invertVertical: 0
+    invertHorizontal: 0
+  cameraAngle:
+    min: 5
+    max: 100
 --- !u!1 &1412642980
 GameObject:
   m_ObjectHideFlags: 0
