@@ -8,6 +8,7 @@ public class Child_Destroyer : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
+        //on collision destroys the childed object
         if (collision.gameObject.tag == "Player")
         {
             Debug.Log("Begone Child");

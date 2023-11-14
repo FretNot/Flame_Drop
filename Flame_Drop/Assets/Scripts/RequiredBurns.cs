@@ -10,6 +10,7 @@ public class RequiredBurns : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
+        //if colliding with player start spawning burning tree, destroy the obhter object & add burns to the parent object by 1
         if (collision.gameObject.tag == "Player")
         {
             Debug.Log("Begin Burn");

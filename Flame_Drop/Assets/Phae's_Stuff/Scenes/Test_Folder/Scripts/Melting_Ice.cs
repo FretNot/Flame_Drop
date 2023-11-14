@@ -8,40 +8,29 @@ public class Melting_Ice : MonoBehaviour
     private float y;
     private float z;
 
-   // public float temp;
-    //public float ogTemp;
-
-    //public bool whiteHot = false;
-
+    [SerializeField]
     public float waitTimer;
-
-    public void Update()
-    {
-        //if (temp > ogTemp)
-        //{
-           // whiteHot = true;
-        //}
-    }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Player" /*&& whiteHot*/)
-        {
-            Debug.Log("Shrinks & Disappears");
+        //if the player collides with this object & their temp is above the melting point then they start the coroutine
+        if (collision.gameObject.tag == "player")
+        { 
+           Debug.Log("Shrinks & Disappears");
             StartCoroutine(Shrink());
         }
     }
 
     IEnumerator Shrink()
     {
+        //waits a time before reducing the size of the object
+        //then destroys the object
         yield return new WaitForSeconds(waitTimer);
-        transform.localScale = new Vector3(x - 0.9f, y - 0.9f, z - 0.9f);
-        //transform.localScale = new Vector3(x - 0.2f, y - 0.2f, z - 0.2f);
+        transform.localScale = new Vector3(x - 0.99f, y - 0.99f, z - 0.99f);
         yield return new WaitForSeconds(waitTimer);
-        transform.localScale = new Vector3(x - 0.7f, y - 0.7f, z - 0.7f);
+        transform.localScale = new Vector3(x - 0.3f, y - 0.3f, z - 0.3f);
         yield return new WaitForSeconds(waitTimer);
-        //transform.localScale = new Vector3(x - 0.4f, y - 0.4f, z - 0.4f);
-        transform.localScale = new Vector3(x - 0.4f, y - 0.4f, z - 0.04f);
+        transform.localScale = new Vector3(x - 0.2f, y - 0.2f, z - 0.2f);
         yield return new WaitForSeconds(waitTimer);
         Destroy(this.gameObject);
     }

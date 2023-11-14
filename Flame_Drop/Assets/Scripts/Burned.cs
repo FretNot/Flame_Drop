@@ -9,6 +9,7 @@ public class Burned : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
+        //if player collides with tree then it instantiates the burning tree & destroys the unburnt tree
         if (collision.gameObject.tag == "Player")
         {
             Debug.Log("Begin Burn");
@@ -18,6 +19,7 @@ public class Burned : MonoBehaviour
     }
     private void Despawn()
     {
+        //destroys the game object
         Destroy(gameObject);
     }
 }

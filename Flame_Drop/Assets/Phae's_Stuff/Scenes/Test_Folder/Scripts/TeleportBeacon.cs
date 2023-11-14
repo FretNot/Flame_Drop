@@ -9,37 +9,28 @@ public class TeleportBeacon : MonoBehaviour
     public GameObject teleportBeacon;
     public GameObject currentBeacon;
     public Transform firePoint;
-    public float grenadeThrowForce;
-    private bool grenadeOut = false;
-    //bool readyToHop;
-    //bool fireOut = false;
+
+    [SerializeField]
+    public float fireBallThrowForce;
+    private bool fireBallOut = false;
+    public bool canThrow = true;
+
+    [SerializeField]
+    public float throwCoolDown;
+    [SerializeField]
+    public float defaultThrowCoolDown;
+    [SerializeField]
+    public float whiteHotCD;
 
     [Header("Settings")]
     public int totalHops;
 
-    public CoolDown _cooldown;
-    /*
-        private static TeleportBeacon _instance;
 
-        public static TeleportBeacon Instance
-        {
-            get { return _instance; }
-        }
-        private void Awake()
-        {
-            if (_instance != null && _instance != this)
-            {
-                Destroy(this.gameObject);
-            }
-            else
-            {
-                _instance = this;
-            }
-        }
-    */
-    //[Header("Settings")]
-    //public float hopCoolDown;
-
+    private void Awake()
+    {
+        whiteHotCD = throwCoolDown / .05f;
+        throwCoolDown = defaultThrowCoolDown;
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -49,121 +40,55 @@ public class TeleportBeacon : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //beGoneSpawn();
-        //OnMouseExit();
         sendIt();
-        //beGoneSpawn();
         teleportNow();
-        //beGoneSpawn();
     }
-
-    /*private void beGoneSpawn()
-    {
-        if (gameObject.tag == "TeleportBeacon")
-        {
-            //OnMouseOver();
-            //OnMouseUpAsButton();
-            //OnMouseExit();
-            //GetComponent<GameObject>();
-            Destroy(currentBeacon);
-            currentBeacon = null;
-            grenadeOut = false;
-            fireOut = false;
-            readyToHop = false;
-        }
-    }*/
-
-   /* public void justDelete()
-    {
-       
-                Destroy(currentBeacon);
-                currentBeacon = null;
-                grenadeOut = false;
-                fireOut = false;
-                readyToHop = false;
-    }*/
 
     private void sendIt()
     {
+        //if you press left button on mouse will throw out a ball to teleport to
         if (Input.GetMouseButtonDown(0))
         {
-            //Debug.Log("cooldown: "+ _cooldown.IsCoolingDown);
-            if (_cooldown.IsCoolingDown) return;
-            if (!grenadeOut)
+            if (canThrow == true)
             {
-                //create new
-                currentBeacon = Instantiate(teleportBeacon, firePoint.position, Quaternion.identity) as GameObject;
-                currentBeacon.GetComponent<Rigidbody>().AddForce(camera.transform.forward * grenadeThrowForce, ForceMode.Impulse);
-                
-                grenadeOut = true;
-                //fireOut = true;
-            }
-            /*StartCoroutine(waitForIt());
+                if (!fireBallOut)
+                {
+                    //create new
+                    currentBeacon = Instantiate(teleportBeacon, firePoint.position, Quaternion.identity) as GameObject;
+                    currentBeacon.GetComponent<Rigidbody>().AddForce(camera.transform.forward * fireBallThrowForce, ForceMode.Impulse);
 
-            //is it out?
-            if (grenadeOut)
-            {
-                //move there
-                float teleportOffset = GetComponent<CapsuleCollider>().height / 2;
-                Vector3 grenadePosition = currentBeacon.transform.position;
-                Vector3 teleportLocation = new Vector3(grenadePosition.x, grenadePosition.y + teleportOffset, grenadePosition.z);
-                transform.position = teleportLocation;
-                Destroy(currentBeacon);
-                currentBeacon = null;
-                grenadeOut = false;
-            }*/
-            _cooldown.StartCoolDown();
-            if (grenadeOut)
-            {
-                Destroy(currentBeacon);
-                currentBeacon = null;
-                currentBeacon = Instantiate(teleportBeacon, firePoint.position, Quaternion.identity) as GameObject;
-                currentBeacon.GetComponent<Rigidbody>().AddForce(camera.transform.forward * grenadeThrowForce, ForceMode.Impulse);
+                    fireBallOut = true;
 
-                grenadeOut = true;
-                //fireOut = true;
+                }
+
+                //is it out?
+                if (fireBallOut)
+                {
+                    //if there is a a beacon out destroy the previous one and make a new one
+                    Destroy(currentBeacon);
+                    currentBeacon = null;
+                    currentBeacon = Instantiate(teleportBeacon, firePoint.position, Quaternion.identity) as GameObject;
+                    currentBeacon.GetComponent<Rigidbody>().AddForce(camera.transform.forward * fireBallThrowForce, ForceMode.Impulse);
+
+                    fireBallOut = true;
+                }
             }
+            canThrow = false;
+            //forces cooldown
+            Invoke(nameof(throwReset), throwCoolDown);
+        }
+        if (canThrow == false)
+        {
+            //supposed to null, but doesn't allow
         }
     }
-
-   /* private void OnMouseOver()
-    {
-        GetComponent<GameObject>();
-        Destroy(currentBeacon);
-        currentBeacon = null;
-        grenadeOut = false;
-        fireOut = false;
-        readyToHop = false;
-    }*/
-
-    
-
-   /* private void OnMouseUpAsButton()
-    {
-        GetComponent<GameObject>();
-        Destroy(currentBeacon);
-        currentBeacon = null;
-        grenadeOut = false;
-        fireOut = false;
-        readyToHop = false;
-    }*/
-
-    /*private void OnMouseExit()
-    {
-        GetComponent<GameObject>();
-        Destroy(currentBeacon);
-        currentBeacon = null;
-        grenadeOut = false;
-        fireOut = false;
-        readyToHop = false;
-    }*/
 
     private void teleportNow()
     {
         if (Input.GetMouseButtonDown(1))
         {
             //is it out?
-            if (grenadeOut)
+            if (fireBallOut)
             {
                 //move there
                 float teleportOffset = GetComponent<CapsuleCollider>().height / 2;
@@ -172,23 +97,42 @@ public class TeleportBeacon : MonoBehaviour
                 transform.position = teleportLocation;
                 Destroy(currentBeacon);
                 currentBeacon = null;
-                grenadeOut = false;
-                //fireOut = false;
-                //readyToHop = false;
+                fireBallOut = false;
             }
-            if (!grenadeOut)
+            if (!fireBallOut)
             {
                 return;
             }
-            //implement hopCoolDown
-            //Invoke(nameof(resetHop), hopCoolDown);
-            //_cooldown.StartCoolDown();
         }
     }
-
-
-    /*private void resetHop()
+    
+    //resets throw capabilities
+    private void throwReset()
     {
-        readyToHop = true;
-    }*/
+        canThrow = true;
+    }
+
+    //when colliding
+    private void OnCollisionEnter(Collision collision)
+    {
+        //when hit coal- return cooldown to the full number
+        if (collision.gameObject.tag == "coal")
+        {
+            Debug.Log("coal has been hit");
+            throwCoolDown = whiteHotCD;
+        }
+
+        //when white hot ends divide by float
+        if (collision.gameObject.tag == "WHEnd")
+        {
+            Debug.Log("white hot has ended");
+            throwCoolDown = defaultThrowCoolDown;
+        }
+
+        //when hit water & the whitHotCD is higher than the defaultThrowCoolDown destroy the object that has been collided with
+        if (collision.gameObject.tag == "water" && whiteHotCD > defaultThrowCoolDown)
+        {
+            Destroy(this.gameObject);
+        }
+    }
 }
