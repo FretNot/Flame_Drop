@@ -130,7 +130,7 @@ public class TeleportBeacon : MonoBehaviour
         }
 
         //when hit water & the whitHotCD is higher than the defaultThrowCoolDown destroy the object that has been collided with
-        if (collision.gameObject.tag == "water" && whiteHotCD > defaultThrowCoolDown)
+        if (collision.gameObject.tag == "water" && throwCoolDown == whiteHotCD)
         {
             Destroy(this.gameObject);
         }
