@@ -1026,7 +1026,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2222f9aaf527ee4ca003c9ae0e35cfb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Burning_Tree: {fileID: 8938868450927071897, guid: 722e17efced0a9a47b61718df8307a0d, type: 3}
+  Burning_Tree: {fileID: 8938868450927071897, guid: 722e17efced0a9a47b61718df8307a0d,
+    type: 3}
 --- !u!54 &1629223555356275218
 Rigidbody:
   m_ObjectHideFlags: 0
